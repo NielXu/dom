@@ -22,6 +22,6 @@ Compare to see if two HTML files create a same view on browser
 
 # TODO
 - [x] Save properties of tags, such as name, value, href etc.
-- [ ] Easier way to let user build a DOM, instead of reading from file
+- [ ] More functions to manipulate DOM tree, like Js
 - [ ] Basic error checking
 - [x] Ignore comments in html file
