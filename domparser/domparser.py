@@ -58,6 +58,12 @@ class textnode(node):
         return self.__str__()
 
 
+class singlenode(node):
+    "Single node are those nodes that does not require close tag"
+    def __init__(self, type_):
+        super().__init__(type_)
+
+
 def parse_dom(html):
     """
     Parse a DOM tree based on the given HTML.
@@ -85,8 +91,11 @@ def _parse(html, root):
         if ch == "<":
             end = html.find(">", index)
             tag = html[index+1:end]
-            result, iend = _search_closed_tag(html, index, tag)
-            if result is not None:
+            tup = _search_closed_tag(html, index, tag)
+            if tup:
+                # If there is end tag for this open tag
+                result = tup[0]
+                iend = tup[1]
                 if len(s.strip()) != 0:
                     root.children.append(textnode(s))
                 s = ""
@@ -94,6 +103,13 @@ def _parse(html, root):
                 root.children.append(n)
                 _parse(html[end+1:result], n)
                 index = iend
+            else:
+                index = end
+                n = singlenode(tag)
+                if len(s.strip()) != 0:
+                    root.children.append(textnode(s))
+                s = ""
+                root.children.append(n)
         else:
             s += ch
         index += 1
@@ -121,7 +137,7 @@ def _debug(n):
     "Debug printing for DOM tree"
     def _dp(n, d):
         prev = "   " * d
-        if len(n.children) == 0:
+        if type(n) == textnode:
             print(prev + "**" + n.type_)
         else:
             print(prev+">>", n.type_, "has children:")
@@ -151,6 +167,8 @@ def _gen_html(n):
     type_ = n.type_
     if type(n) == textnode:
         return type_
+    if type(n) == singlenode:
+        return "<" + type_ +">"
     s = "<"+type_+">"
     for i in n.children:
         s += _gen_html(i)
