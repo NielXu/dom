@@ -24,4 +24,4 @@ Compare to see if two HTML files create a same view on browser
 - [x] Save properties of tags, such as name, value, href etc.
 - [ ] Easier way to let user build a DOM, instead of reading from file
 - [ ] Basic error checking
-- [ ] Ignore comments in html file
+- [x] Ignore comments in html file

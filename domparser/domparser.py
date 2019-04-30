@@ -92,6 +92,10 @@ def _parse(html, root):
         if ch == "<":
             end = html.find(">", index)
             tag = html[index+1:end]
+            # Ignore comment
+            if tag.startswith("!"):
+                index = end + 1
+                continue
             tag, prop = _prop(tag)
             tup = _search_closed_tag(html, index, tag)
             if tup:
@@ -203,4 +207,3 @@ def _gen_html(n):
     for i in n.children:
         s += _gen_html(i)
     return s + "</"+type_+">"
-    
