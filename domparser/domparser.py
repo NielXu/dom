@@ -4,6 +4,7 @@ code and generate a DOM tree based on it. It also have functions
 that can convert DOM tree to html, and save to the given file.
 """
 from freader import flat
+import re
 
 
 class node():
@@ -123,16 +124,17 @@ def _parse(html, root):
 
 def _prop(tg):
     "Analyze properties inside tag"
-    splitted = tg.split()
+    attr = re.findall(r"[a-zA-Z0-9-_]*\s*=\s*[\"'].*?[\"']", tg)
+    tag = tg.split()[0]
     # index 0 always indicates the tag
-    if len(splitted) == 1:
-        return splitted[0], {}
+    if len(attr) == 0:
+        return tag, {}
     mp = {}
-    for i in range(1, len(splitted)):
-        prop = splitted[i]
+    for i in range(0, len(attr)):
+        prop = attr[i]
         name, val = prop.split("=")
         mp[name] = val
-    return splitted[0], mp
+    return tag, mp
 
 
 def _search_closed_tag(html, index, tg):

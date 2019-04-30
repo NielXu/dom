@@ -18,6 +18,16 @@ if __name__ == "__main__":
     # parse_html(n, "test/outputtest2.html")
 
     # test3
-    n = parse_dom(flat("test/test3.html"))
+    # n = parse_dom(flat("test/test3.html"))
+    # _debug(n)
+    # parse_html(n, "test/outputtest3.html")
+
+    # # test4
+    # n = parse_dom(flat("test/test4.html"))
+    # _debug(n)
+    # parse_html(n, "test/outputtest4.html")
+
+    # test5
+    n = parse_dom(flat("test/test5.html"))
     _debug(n)
-    parse_html(n, "test/outputtest3.html")
+    parse_html(n, "test/outputtest5.html")
