@@ -13,7 +13,7 @@ class node():
 
     `type_` The type of this tag
     
-    `prop` Properties of this tag, such as color, size and so on
+    `prop` Properties of this tag, such as color, size and so on, using dict
     
     `val` The value of this tag contains, None if no values
 
@@ -21,7 +21,7 @@ class node():
     """
     def __init__(self, type_):
         self.type_ = type_
-        self.prop = []
+        self.prop = {}
         self.children = []
     
     def __str__(self):
@@ -91,6 +91,7 @@ def _parse(html, root):
         if ch == "<":
             end = html.find(">", index)
             tag = html[index+1:end]
+            tag, prop = _prop(tag)
             tup = _search_closed_tag(html, index, tag)
             if tup:
                 # If there is end tag for this open tag
@@ -100,12 +101,15 @@ def _parse(html, root):
                     root.children.append(textnode(s))
                 s = ""
                 n = node(tag)
+                n.prop = prop
                 root.children.append(n)
                 _parse(html[end+1:result], n)
                 index = iend
             else:
+                # No end tag
                 index = end
                 n = singlenode(tag)
+                n.prop = prop
                 if len(s.strip()) != 0:
                     root.children.append(textnode(s))
                 s = ""
@@ -115,6 +119,20 @@ def _parse(html, root):
         index += 1
     if len(s.strip()) != 0:
         root.children.append(textnode(s))
+
+
+def _prop(tg):
+    "Analyze properties inside tag"
+    splitted = tg.split()
+    # index 0 always indicates the tag
+    if len(splitted) == 1:
+        return splitted[0], {}
+    mp = {}
+    for i in range(1, len(splitted)):
+        prop = splitted[i]
+        name, val = prop.split("=")
+        mp[name] = val
+    return splitted[0], mp
 
 
 def _search_closed_tag(html, index, tg):
@@ -140,7 +158,7 @@ def _debug(n):
         if type(n) == textnode:
             print(prev + "**" + n.type_)
         else:
-            print(prev+">>", n.type_, "has children:")
+            print(prev+">>", n.type_, "has properties:", n.prop, "has children:")
             for i in n.children:
                 _dp(i, d+1)
     _dp(n, 0)
@@ -168,8 +186,18 @@ def _gen_html(n):
     if type(n) == textnode:
         return type_
     if type(n) == singlenode:
-        return "<" + type_ +">"
-    s = "<"+type_+">"
+        prop = n.prop
+        full = "<" + type_
+        for i in prop:
+            val = prop[i]
+            full += " "+i+"="+val
+        return full + ">"
+    prop = n.prop
+    full = "<" + type_
+    for i in prop:
+        val = prop[i]
+        full += " "+i+"="+val
+    s = full + ">"
     for i in n.children:
         s += _gen_html(i)
     return s + "</"+type_+">"
