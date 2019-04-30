@@ -6,16 +6,16 @@ domparser is a useful tool to convert between DOM and HTML. It can parse a HTML 
 First of all, import the necessary modules
 ```python
 from freader import flat
-from domparser import gen, parse_DOM
+from domparser import parse_html, parse_dom
 ```
 read the html file and generate the DOM
 ```python
 html = flat("{path}")       # replace path to html file
-dom = parse_DOM(html)       # dom now represents the root of DOM
+dom = parse_dom(html)       # dom now represents the root of DOM
 ```
 convert DOM back to html file, and save to a given location
 ```python
-gen(dom, "{path}")          # replace path to html file
+parse_html(dom, "{path}")          # replace path to html file
 ```
 Compare to see if two HTML files create a same view on browser
 

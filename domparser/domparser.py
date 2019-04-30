@@ -58,7 +58,7 @@ class textnode(node):
         return self.__str__()
 
 
-def parse_DOM(html):
+def parse_dom(html):
     """
     Parse a DOM tree based on the given HTML.
     The provided HTML must be a list that contains
@@ -130,7 +130,7 @@ def _debug(n):
     _dp(n, 0)
 
 
-def gen(dom, targ=None):
+def parse_html(dom, targ=None):
     """
     Generate a single line html code that converted from
     the given DOM tree. If targ is specified, the code
