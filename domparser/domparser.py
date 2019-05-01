@@ -142,6 +142,8 @@ def _prop(tg):
     for i in range(0, len(attr)):
         prop = attr[i]
         name, val = prop.split("=")
+        name = name.replace("\"", "").replace("'", "")
+        val = val.replace("\"", "").replace("'", "")
         mp[name] = val
     return tag, mp
 
@@ -201,13 +203,13 @@ def _gen_html(n):
         full = "<" + type_
         for i in prop:
             val = prop[i]
-            full += " "+i+"="+val
+            full += " "+i+"=\""+val + "\""
         return full + ">"
     prop = n.prop
     full = "<" + type_
     for i in prop:
         val = prop[i]
-        full += " "+i+"="+val
+        full += " "+i+"=\""+val+"\""
     s = full + ">"
     for i in n.children:
         s += _gen_html(i)
