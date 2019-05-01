@@ -1,5 +1,6 @@
 from domparser import parse_dom, _debug, parse_html
 from freader import flat
+from domoper import get_element_by_id
 
 if __name__ == "__main__":
     # # parse html to DOM, debug printing
@@ -17,7 +18,7 @@ if __name__ == "__main__":
     # _debug(n)
     # parse_html(n, "test/outputtest2.html")
 
-    # test3
+    # # test3
     # n = parse_dom(flat("test/test3.html"))
     # _debug(n)
     # parse_html(n, "test/outputtest3.html")
@@ -32,7 +33,12 @@ if __name__ == "__main__":
     # _debug(n)
     # parse_html(n, "test/outputtest5.html")
 
-    # test6
-    n = parse_dom(flat("test/test6.html"))
+    # # test6
+    # n = parse_dom(flat("test/test6.html"))
+    # _debug(n)
+    # parse_html(n, "test/outputtest6.html")
+
+    # test domoper
+    n = parse_dom(flat("test/test7.html"))
     _debug(n)
-    parse_html(n, "test/outputtest6.html")
+    parse_html(n, "test/outputtest7.html")

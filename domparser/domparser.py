@@ -19,11 +19,14 @@ class node():
     `val` The value of this tag contains, None if no values
 
     `children` A list of children, empty list if no children
+
+    `mark` Tell if this node had been visited or not, internal use only
     """
     def __init__(self, type_):
         self.type_ = type_
         self.prop = {}
         self.children = []
+        self.mark = False
     
     def __str__(self):
         return "node(type={0}, properties={1})".format(
@@ -78,52 +81,54 @@ def parse_dom(html):
     first before parsing to DOM, consider using 
     freader.flat(f).
     """
-    n = node("html")
-    _parse(html, n)
-    return n.children[0]
+    return _parse(html)
 
 
-def _parse(html, root):
+def _parse(html):
     "Parsing html"
     index = 0
     s = ""
+    stack = []
     while index < len(html):
         ch = html[index]
         if ch == "<":
             end = html.find(">", index)
             tag = html[index+1:end]
-            # Ignore comment
             if tag.startswith("!"):
-                index = end + 1
+                # Ignore comment
+                index = end+1
                 continue
-            tag, prop = _prop(tag)
-            tup = _search_closed_tag(html, index, tag)
-            if tup:
-                # If there is end tag for this open tag
-                result = tup[0]
-                iend = tup[1]
+            # tag is: a, li, ul ...
+            # mp is attributes in dict
+            tag, mp = _prop(tag)
+            if tag.startswith("/"):
+                # It is a close tag, search for corresponding open tag
+                li = []
+                tag = tag[1:]
+                while len(stack) > 0:
+                    if stack[-1].type_ == tag and stack[-1].mark == False:
+                        break
+                    li.append(stack.pop())
+                stack[-1].children = li[::-1]
+                stack[-1].mark = True
                 if len(s.strip()) != 0:
-                    root.children.append(textnode(s))
+                    stack[-1].children.append(textnode(s))
                 s = ""
-                n = node(tag)
-                n.prop = prop
-                root.children.append(n)
-                _parse(html[end+1:result], n)
-                index = iend
             else:
-                # No end tag
-                index = end
-                n = singlenode(tag)
-                n.prop = prop
+                if _search_closed_tag(html, index, tag):
+                    n = node(tag)
+                else:
+                    n = singlenode(tag)
                 if len(s.strip()) != 0:
-                    root.children.append(textnode(s))
+                    stack.append(textnode(s))
                 s = ""
-                root.children.append(n)
+                n.prop = mp
+                stack.append(n)
+            index = end
         else:
             s += ch
         index += 1
-    if len(s.strip()) != 0:
-        root.children.append(textnode(s))
+    return stack.pop()
 
 
 def _prop(tg):
