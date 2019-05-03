@@ -22,6 +22,23 @@ def get_element_by_id(n, id_):
             return f
 
 
+def get_elements_by_class(n, class_):
+    """
+    Get elements by class name, return a list of nodes as
+    the result. If there is no element with the given class
+    name, return an empty list
+    """
+    li = []
+    def _recur(n, class_, li):
+        if "class" in n.prop:
+            if n.prop["class"] == class_:
+                li.append(n)
+        for c in n.children:
+            _recur(c, class_, li)
+    _recur(n, class_, li)
+    return li
+
+
 def remove_element_by_id(n, id_):
     """
     Remove an element from the DOM by its id. If there is

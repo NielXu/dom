@@ -1,6 +1,6 @@
 from domparser import parse_dom, _debug, parse_html, textnode
 from freader import flat
-from domoper import get_element_by_id, remove_element_by_id
+from domoper import get_element_by_id, remove_element_by_id, get_elements_by_class
 
 if __name__ == "__main__":
     # # parse html to DOM, debug printing
@@ -39,10 +39,14 @@ if __name__ == "__main__":
     # parse_html(n, "test/outputtest6.html")
 
     # test domoper
-    n = parse_dom(flat("test/test7.html"))
-    node = get_element_by_id(n, "red")
-    node.children.append(textnode("Additional text"))
-    print(node)
-    node = remove_element_by_id(n, "blue")
-    print(node)
-    parse_html(n, "test/outputtest7.html")
+    # n = parse_dom(flat("test/test7.html"))
+    # node = get_element_by_id(n, "red")
+    # node.children.append(textnode("Additional text"))
+    # print(node)
+    # node = remove_element_by_id(n, "blue")
+    # print(node)
+    # parse_html(n, "test/outputtest7.html")
+
+    n = parse_dom(flat("test/test5.html"))
+    for i in get_elements_by_class(n, "linkcs"):
+        print(i)
