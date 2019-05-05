@@ -1,6 +1,6 @@
 from domparser import parse_dom, _debug, parse_html, textnode
 from freader import flat
-from domoper import get_element_by_id, remove_element_by_id, get_elements_by_class
+from domoper import get_element_by_id, remove_element_by_id, get_elements_by_class, get
 
 if __name__ == "__main__":
     # # parse html to DOM, debug printing
@@ -48,5 +48,10 @@ if __name__ == "__main__":
     # parse_html(n, "test/outputtest7.html")
 
     n = parse_dom(flat("test/test5.html"))
+    for i in get(n, "div", {"id":"topbar"}):
+        print(i)
+    
     for i in get_elements_by_class(n, "linkcs"):
         print(i)
+    
+    print(get_element_by_id(n, "topbar"))

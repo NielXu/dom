@@ -13,13 +13,8 @@ def get_element_by_id(n, id_):
     Get an element by its id, return the node as the result.
     If there is no element with the given id, return None.
     """
-    if "id" in n.prop:
-        if n.prop["id"] == id_:
-            return n
-    for c in n.children:
-        f = get_element_by_id(c, id_)
-        if f is not None:
-            return f
+    li = get(n, "*", {"id":id_})
+    return None if len(li) == 0 else li[0]
 
 
 def get_elements_by_class(n, class_):
@@ -28,15 +23,7 @@ def get_elements_by_class(n, class_):
     the result. If there is no element with the given class
     name, return an empty list
     """
-    li = []
-    def _recur(n, class_, li):
-        if "class" in n.prop:
-            if n.prop["class"] == class_:
-                li.append(n)
-        for c in n.children:
-            _recur(c, class_, li)
-    _recur(n, class_, li)
-    return li
+    return get(n, "*", {"class":class_})
 
 
 def remove_element_by_id(n, id_):
@@ -57,3 +44,44 @@ def remove_element_by_id(n, id_):
         f = remove_element_by_id(c, id_)
         if f is not None:
             return f
+
+
+def get(n, type_, attr={}):
+    """
+    Get elements by their types and attributes. Return the a
+    list of nodes as the result, or None if nothing matched.
+
+    `n` The root node of DOM
+
+    `type_` The type of the element, such as div, span, p, it can
+    also be set to *, which will find all elements instead of specific
+    type of elements
+
+    `attr` The attribute dict, such as {'id':'xyz'}, default
+    is empty
+    """
+    stack = [n]
+    result = []
+    while len(stack) > 0:
+        n = stack.pop()
+        if type_ == "*":
+            if _attr_match(n, attr):
+                result.append(n)
+        else:
+            if n.type_ == type_ and _attr_match(n, attr):
+                result.append(n)
+        for c in n.children:
+            stack.append(c)
+    return result
+
+
+def _attr_match(n, attr):
+    "Return True if attributes match"
+    for i in attr:
+        if i not in n.prop:
+            return False
+        ki = attr[i]
+        ni = n.prop[i]
+        if ki != ni:
+            return False
+    return True
