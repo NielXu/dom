@@ -48,8 +48,9 @@ def remove_element_by_id(n, id_):
 
 def get(n, type_, attr={}):
     """
-    Get elements by their types and attributes. Return the a
-    list of nodes as the result, or None if nothing matched.
+    Get elements by their types and attributes. Return a
+    list of nodes as the result, or an empty list if nothing
+    found.
 
     `n` The root node of DOM
 
