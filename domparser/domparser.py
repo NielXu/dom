@@ -3,7 +3,7 @@ This is a DOM generator, what it does is reading HTML source
 code and generate a DOM tree based on it. It also have functions
 that can convert DOM tree to html, and save to the given file.
 """
-from freader import flat
+from requests import get
 import re
 
 
@@ -84,6 +84,55 @@ def parse_dom(html):
     return _parse(html)
 
 
+def parse_html(dom, targ=None):
+    """
+    Generate a single line html code that converted from
+    the given DOM tree. If targ is specified, the code
+    will be saved to the given location. The passed in
+    dom should be a node.
+    If writing to a given file, it will use w+, which
+    creates a new file if not exist, and then overwrite
+    the content
+    """
+    r = _gen_html(dom)
+    if targ:
+        with open(targ, "w+") as f:
+            f.write(r)
+    return r
+
+
+def readurl(url):
+    """
+    Read a url and try to retrieve html from the website.
+    And then generate the DOM tree based on the html.
+    """
+    return parse_dom(flat(get(url).text))
+
+
+def flat(s):
+    """
+    Given a string, remove all next lines and extra whitespaces,
+    and return the new string.
+    """
+    s = s.replace('\n', '')
+    s = " ".join(s.split())
+    return s
+
+
+def flatfile(d):
+    """
+    Read lines of file and strip whitespaces on both sides.
+    The multi-lines file will be merged to one line and
+    separated by a whitespace.
+    """
+    f = open(d, "r")
+    lines = f.readlines()
+    s = ""
+    for i in lines:
+        s += i.strip() + " "
+    return s[:-1]
+
+
 def _parse(html):
     "Parsing html"
     index = 0
@@ -141,7 +190,7 @@ def _prop(tg):
     mp = {}
     for i in range(0, len(attr)):
         prop = attr[i]
-        name, val = prop.split("=")
+        name, val = prop.split("=", maxsplit=1)
         name = name.replace("\"", "").replace("'", "")
         val = val.replace("\"", "").replace("'", "")
         mp[name] = val
@@ -175,23 +224,6 @@ def _debug(n):
             for i in n.children:
                 _dp(i, d+1)
     _dp(n, 0)
-
-
-def parse_html(dom, targ=None):
-    """
-    Generate a single line html code that converted from
-    the given DOM tree. If targ is specified, the code
-    will be saved to the given location. The passed in
-    dom should be a node.
-    If writing to a given file, it will use w+, which
-    creates a new file if not exist, and then overwrite
-    the content
-    """
-    r = _gen_html(dom)
-    if targ:
-        with open(targ, "w+") as f:
-            f.write(r)
-    return r
 
 
 def _gen_html(n):
