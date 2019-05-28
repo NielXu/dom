@@ -1,64 +1,262 @@
-from domparser import parse_dom, _debug, parse_html, textnode, flatfile, readurl
-from domoper import get_element_by_id, remove_element_by_id, get_elements_by_class, get
+import domparser
+import domoper
+import unittest
+import requests
+from bs4 import BeautifulSoup
+
+
+class TestContent(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        with open('test\\test.html') as f:
+            self.soup = BeautifulSoup(f, features="html.parser")
+        self.dom = domparser.parse_dom(domparser.flatfile('test\\test.html'))
+    
+    def comp_text(self, a, b):
+        a = "".join(a.split())
+        b = "".join(b.split())
+        self.assertEqual(a, b)
+    
+    def comp_element(self, e):
+        expect = self.soup.findAll(e)
+        actual = domoper.getAll(self.dom, e)
+        self.assertEqual(len(expect), len(actual))
+        for i in range(len(expect)):
+            self.comp_text(expect[i].text, actual[i].getText())
+
+    def test_all_tags(self):
+        expect = self.soup.findAll()
+        actual = domoper.getAll(self.dom, "*")
+        self.assertEqual(len(expect), len(actual))
+    
+    def test_html(self):
+        self.comp_element("html")
+    
+    def test_header(self):
+        self.comp_element("head")
+    
+    def test_body(self):
+        self.comp_element("body")
+    
+    def test_h2(self):
+        self.comp_element("h2")
+    
+    def test_h1(self):
+        self.comp_element("h1")
+
+
+class TestHtml2(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        with open('test\\test2.html') as f:
+            self.soup = BeautifulSoup(f, features="html.parser")
+        self.dom = domparser.parse_dom(domparser.flatfile('test\\test2.html'))
+    
+    def comp_text(self, a, b):
+        a = "".join(a.split())
+        b = "".join(b.split())
+        self.assertEqual(a, b)
+    
+    def comp_element(self, e):
+        expect = self.soup.findAll(e)
+        actual = domoper.getAll(self.dom, e)
+        self.assertEqual(len(expect), len(actual))
+        for i in range(len(expect)):
+            self.comp_text(expect[i].text, actual[i].getText())
+    
+    def test_all_tags(self):
+        expect = self.soup.findAll()
+        actual = domoper.getAll(self.dom, "*")
+        self.assertEqual(len(expect), len(actual))
+    
+    def test_html(self):
+        self.comp_element("html")
+    
+    def test_header(self):
+        self.comp_element("head")
+    
+    def test_body(self):
+        self.comp_element("body")
+    
+    def test_h2(self):
+        self.comp_element("h2")
+    
+    def test_h1(self):
+        self.comp_element("h1")
+    
+    def test_a(self):
+        self.comp_element("a")
+
+
+class TestHtml3(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        with open('test\\test3.html') as f:
+            self.soup = BeautifulSoup(f, features="html.parser")
+        self.dom = domparser.parse_dom(domparser.flatfile('test\\test3.html'))
+    
+    def comp_text(self, a, b):
+        a = "".join(a.split())
+        b = "".join(b.split())
+        self.assertEqual(a, b)
+    
+    def comp_element(self, e):
+        expect = self.soup.findAll(e)
+        actual = domoper.getAll(self.dom, e)
+        self.assertEqual(len(expect), len(actual))
+        for i in range(len(expect)):
+            self.comp_text(expect[i].text, actual[i].getText())
+    
+    def comp_attr(self, e):
+        expect = self.soup.find(e).attrs
+        actual = domoper.get(self.dom, e).prop
+        self.assertEqual(len(list(expect)), len(list(actual)))
+        for i in expect:
+            self.assertEqual(expect[i], actual[i])
+
+    def test_all_tags(self):
+        expect = self.soup.findAll()
+        actual = domoper.getAll(self.dom, "*")
+        self.assertEqual(len(expect), len(actual))
+    
+    def test_html(self):
+        self.comp_element("html")
+    
+    def test_header(self):
+        self.comp_element("head")
+    
+    def test_body(self):
+        self.comp_element("body")
+    
+    def test_h2(self):
+        self.comp_element("h2")
+    
+    def test_h1(self):
+        self.comp_element("h1")
+    
+    def test_a(self):
+        self.comp_element("a")
+    
+    def test_input(self):
+        self.comp_element("input")
+    
+    def test_a_attr(self):
+        self.comp_attr("a")
+    
+    def test_input_match(self):
+        expect = self.soup.find("input", attrs={"type":"text"}).attrs['type']
+        actual = domoper.get(self.dom, "input", attr={"type":"text"}).prop['type']
+        self.assertEqual(expect, actual)
+        expect = self.soup.find("input", attrs={"type":"password"}).attrs['type']
+        actual = domoper.get(self.dom, "input", attr={"type":"password"}).prop['type']
+        self.assertEqual(expect, actual)
+        expect = self.soup.find("input", attrs={"type":"submit"}).attrs['value']
+        actual = domoper.get(self.dom, "input", attr={"type":"submit"}).prop['value']
+        self.assertEqual(expect, actual)
+
+
+class TestHtml5(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        with open('test\\test5.html') as f:
+            self.soup = BeautifulSoup(f, features="html.parser")
+        self.dom = domparser.parse_dom(domparser.flatfile('test\\test5.html'))
+    
+    def comp_text(self, a, b):
+        a = "".join(a.split())
+        b = "".join(b.split())
+        self.assertEqual(a, b)
+    
+    def comp_element(self, e):
+        expect = self.soup.findAll(e)
+        actual = domoper.getAll(self.dom, e)
+        self.assertEqual(len(expect), len(actual))
+        for i in range(len(expect)):
+            self.comp_text(expect[i].text, actual[i].getText())
+
+    def test_all_tags(self):
+        expect = self.soup.findAll()
+        actual = domoper.getAll(self.dom, "*")
+        self.assertEqual(len(expect), len(actual))
+    
+    def test_html(self):
+        self.comp_element("html")
+    
+    def test_header(self):
+        self.comp_element("head")
+    
+    def test_body(self):
+        self.comp_element("body")
+    
+    def test_h2(self):
+        self.comp_element("h2")
+    
+    def test_h1(self):
+        self.comp_element("h1")
+
+    def test_input(self):
+        self.comp_element("input")
+    
+    def test_spec_a(self):
+        expect = self.soup.findAll("a")
+        actual = domoper.getAll(self.dom, "a")
+        self.assertEqual(len(expect), len(actual))
+
+        expect = self.soup.find("a", attrs={"title": "Go to home"}).text
+        actual = domoper.get(self.dom, "a", attr={"title": "Go to home"}).getText()
+        self.assertEqual(expect, actual)
+    
+    def test_match_id(self):
+        expect = self.soup.find(attrs={"id":"content"}).text
+        actual = domoper.get_element_by_id(self.dom, "content").getText()
+        self.comp_text(expect, actual)
+    
+    def test_match_class(self):
+        expect = self.soup.findAll(attrs={"class":"linkcs"})
+        actual = domoper.get_elements_by_class(self.dom, "linkcs")
+        self.assertEqual(len(expect), len(actual))
+
+
+# Failure
+class TestExternalHtml(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        targ = "https://duckduckgo.com/"
+        self.soup = BeautifulSoup(requests.get(targ).text, features="html.parser")
+        self.dom = domparser.parse_dom(domparser.flat(targ))
+    
+    def comp_text(self, a, b):
+        a = "".join(a.split())
+        b = "".join(b.split())
+        self.assertEqual(a, b)
+    
+    def comp_element(self, e):
+        expect = self.soup.findAll(e)
+        actual = domoper.getAll(self.dom, e)
+        self.assertEqual(len(expect), len(actual))
+        for i in range(len(expect)):
+            self.comp_text(expect[i].text, actual[i].getText())
+
+    def test_all_tags(self):
+        expect = self.soup.findAll()
+        actual = domoper.getAll(self.dom, "*")
+        self.assertEqual(len(expect), len(actual))
+    
+    def test_html(self):
+        self.comp_element("html")
+    
+    def test_header(self):
+        self.comp_element("head")
+    
+    def test_body(self):
+        self.comp_element("body")
+    
+    def test_h2(self):
+        self.comp_element("h2")
+    
+    def test_h1(self):
+        self.comp_element("h1")
+
 
 if __name__ == "__main__":
-    # # parse html to DOM, debug printing
-    # n = parse_dom(flatfile("test/test.html"))
-    # _debug(n)
-    
-    # # Parse the DOM tree back to html
-    # # result save to test/outputtest.html
-    # # Compare it to see if two files generate
-    # # same view
-    # print(parse_html(n, "test/outputtest.html"))
-
-    # # test2
-    # n = parse_dom(flatfile("test/test2.html"))
-    # _debug(n)
-    # parse_html(n, "test/outputtest2.html")
-
-    # # test3
-    # n = parse_dom(flatfile("test/test3.html"))
-    # _debug(n)
-    # parse_html(n, "test/outputtest3.html")
-
-    # # test4
-    # n = parse_dom(flatfile("test/test4.html"))
-    # _debug(n)
-    # parse_html(n, "test/outputtest4.html")
-
-    # # test5
-    # n = parse_dom(flatfile("test/test5.html"))
-    # _debug(n)
-    # parse_html(n, "test/outputtest5.html")
-
-    # # test6
-    # n = parse_dom(flatfile("test/test6.html"))
-    # _debug(n)
-    # parse_html(n, "test/outputtest6.html")
-
-    # test domoper
-    # n = parse_dom(flatfile("test/test7.html"))
-    # node = get_element_by_id(n, "red")
-    # node.children.append(textnode("Additional text"))
-    # print(node)
-    # node = remove_element_by_id(n, "blue")
-    # print(node)
-    # parse_html(n, "test/outputtest7.html")
-
-    # n = parse_dom(flatfile("test/test5.html"))
-    # for i in get(n, "div", {"id":"topbar"}):
-    #     print(i)
-    
-    # for i in get_elements_by_class(n, "linkcs"):
-    #     print(i)
-    
-    # print(get_element_by_id(n, "topbar"))
-
-    # An example using domoper with duckduckgo
-    d = readurl('https://duckduckgo.com/')
-    li = get(d, 'div')
-    for i in li:
-        print(i)
-    print("TOTAL:", len(li))
-    
+    unittest.main()

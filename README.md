@@ -18,6 +18,9 @@ parse_html(dom, "{path}")          # replace path to html file
 ```
 Compare to see if two HTML files create a same view on browser
 
+# Bugs
+- Parsing large html files might cause error(corresponding to `test.TestExternalHtml`)
+
 
 # TODO
 - [x] Save properties of tags, such as name, value, href etc.

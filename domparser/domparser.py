@@ -47,6 +47,17 @@ class node():
         j['children'] = self.children
         j['property'] = self.prop
         return j
+    
+    def getText(self):
+        """
+        Get the string that this node contains, it also includes
+        its children's text. The result might not be well formatted
+        especially for tags that have very long strings.
+        """
+        s = ""
+        for c in self.children:
+                s += c.getText() + "\n"
+        return s[:-1]
 
 
 class textnode(node):
@@ -60,6 +71,9 @@ class textnode(node):
     
     def __repr__(self):
         return self.__str__()
+    
+    def getText(self):
+        return self.type_
 
 
 class singlenode(node):
@@ -125,12 +139,12 @@ def flatfile(d):
     The multi-lines file will be merged to one line and
     separated by a whitespace.
     """
-    f = open(d, "r")
-    lines = f.readlines()
-    s = ""
-    for i in lines:
-        s += i.strip() + " "
-    return s[:-1]
+    with open(d, "r") as f:
+        lines = f.readlines()
+        s = ""
+        for i in lines:
+            s += i.strip() + " "
+        return s[:-1]
 
 
 def _parse(html):

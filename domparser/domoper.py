@@ -13,8 +13,7 @@ def get_element_by_id(n, id_):
     Get an element by its id, return the node as the result.
     If there is no element with the given id, return None.
     """
-    li = get(n, "*", {"id":id_})
-    return None if len(li) == 0 else li[0]
+    return get(n, "*", {"id":id_})
 
 
 def get_elements_by_class(n, class_):
@@ -23,7 +22,7 @@ def get_elements_by_class(n, class_):
     the result. If there is no element with the given class
     name, return an empty list
     """
-    return get(n, "*", {"class":class_})
+    return getAll(n, "*", {"class":class_})
 
 
 def remove_element_by_id(n, id_):
@@ -46,9 +45,9 @@ def remove_element_by_id(n, id_):
             return f
 
 
-def get(n, type_, attr={}):
+def getAll(n, type_, attr={}):
     """
-    Get elements by their types and attributes. Return a
+    Get all elements by their types and attributes. Return a
     list of nodes as the result, or an empty list if nothing
     found.
 
@@ -66,7 +65,7 @@ def get(n, type_, attr={}):
     while len(stack) > 0:
         n = stack.pop()
         if type_ == "*":
-            if _attr_match(n, attr):
+            if type(n) != textnode and _attr_match(n, attr):
                 result.append(n)
         else:
             if n.type_ == type_ and _attr_match(n, attr):
@@ -74,6 +73,34 @@ def get(n, type_, attr={}):
         for c in n.children:
             stack.append(c)
     return result
+
+
+def get(n, type_, attr={}):
+    """
+    Get the first element that matches the type and attributes on
+    the DOM tree. Return None if no element match
+
+    `n` The root node of DOM
+
+    `type_` The type of the element, such as div, span, p, it can
+    also be set to *, which will find all elements instead of specific
+    type of elements
+
+    `attr` The attribute dict, such as {'id':'xyz'}, default
+    is empty
+    """
+    stack = [n]
+    while len(stack) > 0:
+        n = stack.pop()
+        if type_ == "*":
+            if type(n) != textnode and _attr_match(n, attr):
+                return n
+        else:
+            if n.type_ == type_ and _attr_match(n, attr):
+                return n
+        for c in n.children:
+            stack.append(c)
+
 
 
 def _attr_match(n, attr):
