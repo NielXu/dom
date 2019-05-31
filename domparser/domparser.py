@@ -115,10 +115,11 @@ def parse_html(dom, targ=None):
     return r
 
 
-def readurl(url):
+def parse_url(url):
     """
-    Read a url and try to retrieve html from the website.
-    And then generate the DOM tree based on the html.
+    Make connection to the target url and try to parse
+    the DOM tree based on the retrieved HTML, return
+    the root node of the DOM tree.
     """
     return parse_dom(flat(get(url).text))
 
