@@ -197,7 +197,7 @@ def _parse(html):
 
 def _prop(tg):
     "Analyze properties inside tag"
-    attr = re.findall(r"[a-zA-Z0-9-_]*\s*=\s*[\"'].*?[\"']", tg)
+    attr = re.findall(r"[a-zA-Z0-9-_]*\s*=\s*[\"].*?[\"]", tg)
     tag = tg.split()[0]
     # index 0 always indicates the tag
     if len(attr) == 0:

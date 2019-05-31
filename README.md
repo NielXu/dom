@@ -24,6 +24,9 @@ Compare to see if two HTML files create a same view on browser
 
 # TODO
 - [x] Save properties of tags, such as name, value, href etc.
-- [ ] More functions to manipulate DOM tree, like Js
+- [x] More functions to manipulate DOM tree
 - [ ] Basic error checking
+- [ ] Support XPath in domoper
+- [ ] Deal with encoding problems
+- [ ] Docs
 - [x] Ignore comments in html file

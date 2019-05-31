@@ -5,7 +5,7 @@ module such as BeautifulSoup (but with less features).
 It also looks familiar with JavaScript code such as
 document.getElementById() etc.
 """
-from domparser import textnode
+from .domparser import textnode
 
 
 def get_element_by_id(n, id_):
