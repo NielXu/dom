@@ -217,13 +217,12 @@ class TestHtml5(unittest.TestCase):
         self.assertEqual(len(expect), len(actual))
 
 
-# Failure
 class TestExternalHtml(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         targ = "https://duckduckgo.com/"
         self.soup = BeautifulSoup(requests.get(targ).text, features="html.parser")
-        self.dom = domparser.parse_dom(domparser.flat(targ))
+        self.dom = domparser.parse_url(targ)
     
     def comp_text(self, a, b):
         a = "".join(a.split())
