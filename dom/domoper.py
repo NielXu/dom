@@ -102,6 +102,17 @@ def get(n, type_, attr={}):
             stack.append(c)
 
 
+def xpath(path):
+    """
+    Trying to find element that matches the xpath, return
+    a list of elements that are matched. It supports tags
+    and indices. For example:
+    `//div[@class="something"][1]//span`, or matching
+    by `#someID` or `.someClass`
+
+    `path` The xpath in string
+    """
+
 
 def _attr_match(n, attr):
     "Return True if attributes match"
