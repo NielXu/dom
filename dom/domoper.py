@@ -112,6 +112,17 @@ def xpath(path):
 
     `path` The xpath in string
     """
+    raise Exception("Unimplemented function")
+
+
+def tojson(n):
+    """
+    Convert the DOM tree into json format, return a dict
+    as the result.
+
+    `n` DOM tree
+    """
+    raise Exception("Unimplemented function")
 
 
 def _attr_match(n, attr):
