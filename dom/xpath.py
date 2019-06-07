@@ -11,9 +11,9 @@ def parse_xpath(x):
     
     @Support
     ---
-    `/` a single element
+    `/` absolute
     
-    `//` all elements
+    `//` relative
     
     `[0]` index
     
@@ -22,6 +22,14 @@ def parse_xpath(x):
     `*` wild card
 
     `text()` Text
+
+    `div, class, span, ...` tags
+
+    @example
+    ---
+    `//div`, `//*`, `//div[@class="xyz"]`,
+    `//div//div//*`, `//*[contains(@class, "xyz")]`,
+    `//span[contains(text(), "xyz")]`, ...
 
     @param
     ---
