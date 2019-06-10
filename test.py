@@ -10,7 +10,7 @@ class TestContent(unittest.TestCase):
     def setUpClass(self):
         with open(path.join("test", "test.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
-        self.dom = domparser.parse_dom(domparser.flatfile('test\\test.html'))
+        self.dom = domparser.parse_dom(domparser.flatfile(path.join("test", "test.html")))
     
     def comp_text(self, a, b):
         a = "".join(a.split())
@@ -50,7 +50,7 @@ class TestHtml2(unittest.TestCase):
     def setUpClass(self):
         with open(path.join("test", "test2.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
-        self.dom = domparser.parse_dom(domparser.flatfile('test\\test2.html'))
+        self.dom = domparser.parse_dom(domparser.flatfile(path.join("test", "test2.html")))
     
     def comp_text(self, a, b):
         a = "".join(a.split())
@@ -93,7 +93,7 @@ class TestHtml3(unittest.TestCase):
     def setUpClass(self):
         with open(path.join("test", "test3.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
-        self.dom = domparser.parse_dom(domparser.flatfile('test\\test3.html'))
+        self.dom = domparser.parse_dom(domparser.flatfile(path.join("test", "test3.html")))
     
     def comp_text(self, a, b):
         a = "".join(a.split())
@@ -160,7 +160,7 @@ class TestHtml5(unittest.TestCase):
     def setUpClass(self):
         with open(path.join("test", "test5.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
-        self.dom = domparser.parse_dom(domparser.flatfile('test\\test5.html'))
+        self.dom = domparser.parse_dom(domparser.flatfile(path.join("test", "test5.html")))
     
     def comp_text(self, a, b):
         a = "".join(a.split())
