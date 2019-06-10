@@ -1,13 +1,14 @@
 from dom import domparser, domoper
 import unittest
 import requests
+from os import path
 from bs4 import BeautifulSoup
 
 
 class TestContent(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        with open('test\\test.html') as f:
+        with open(path.join("test", "test.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
         self.dom = domparser.parse_dom(domparser.flatfile('test\\test.html'))
     
@@ -47,7 +48,7 @@ class TestContent(unittest.TestCase):
 class TestHtml2(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        with open('test\\test2.html') as f:
+        with open(path.join("test", "test2.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
         self.dom = domparser.parse_dom(domparser.flatfile('test\\test2.html'))
     
@@ -90,7 +91,7 @@ class TestHtml2(unittest.TestCase):
 class TestHtml3(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        with open('test\\test3.html') as f:
+        with open(path.join("test", "test3.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
         self.dom = domparser.parse_dom(domparser.flatfile('test\\test3.html'))
     
@@ -157,7 +158,7 @@ class TestHtml3(unittest.TestCase):
 class TestHtml5(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        with open('test\\test5.html') as f:
+        with open(path.join("test", "test5.html")) as f:
             self.soup = BeautifulSoup(f, features="html.parser")
         self.dom = domparser.parse_dom(domparser.flatfile('test\\test5.html'))
     
